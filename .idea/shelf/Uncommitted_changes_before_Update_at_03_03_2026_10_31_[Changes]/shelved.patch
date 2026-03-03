@@ -1,0 +1,324 @@
+Index: script.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/script.js b/script.js
+new file mode 100644
+--- /dev/null	(date 1772531829261)
++++ b/script.js	(date 1772531829261)
+@@ -0,0 +1,60 @@
++//--------------------------
++// Elementos DOM
++//--------------------------
++
++const palavraInput = document.getElementById('palavra')
++const btnCaptalizar = document.getElementById('capitalizar')
++const divResultado = document.getElementById('resultado')
++
++//--------------------------
++// Validacação de Entrada e Funções
++//--------------------------
++
++function verificarInput(event){
++    event.target.value = event.target.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
++}
++
++function verificarPalavra(){
++    if (palavraInput.value.trim() === "") {
++        alert("Por favor preencha a frase");
++        palavraInput.focus();
++        return false;
++    }
++    if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(palavraInput.value)){
++        alert("Por favor utilize apenas LETRAS");
++        palavraInput.value = "";
++        palavraInput.focus();
++        return false;
++    }
++
++    return true;
++}
++
++// Exibir palavra
++
++function capiturarInput(){
++    const palavraOriginal = palavraInput.value;
++
++    const palavras = palavraInput.value.split(" ");
++    for (let i = 0 ; i < palavras.length; i++){
++        if(palavras[i].length === 0 ) continue;
++        palavras[i] = palavras[i][0].toUpperCase() + palavras[i].substring(1);
++    }
++    
++    const fraseCapitalizada = palavras.join(" ");
++
++    divResultado.innerHTML = `
++    <p>original: <b>${palavraOriginal}</b></p>
++    <p>Capitalizada: <b>${fraseCapitalizada}</b></p>
++    `
++}
++
++//eventos
++
++palavraInput.addEventListener('input', verificarInput);
++
++btnCaptalizar.addEventListener('click', () => {
++    if(!verificarPalavra()) return;
++    capiturarInput();
++    }
++)
+Index: style.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/style.css b/style.css
+new file mode 100644
+--- /dev/null	(date 1772531945114)
++++ b/style.css	(date 1772531945114)
+@@ -0,0 +1,174 @@
++/* =========================
++   Reset + Base
++========================= */
++* {
++  box-sizing: border-box;
++}
++
++:root{
++  --bg: #0b0f19;          /* fundo */
++  --card: rgba(255,255,255,.06);
++  --card-border: rgba(255,255,255,.12);
++  --text: rgba(255,255,255,.92);
++  --muted: rgba(255,255,255,.70);
++  --accent: #7c3aed;      /* roxo tech */
++  --accent-2: #22c55e;    /* verde sutil */
++  --shadow: 0 18px 60px rgba(0,0,0,.55);
++  --radius: 18px;
++}
++
++html, body {
++  height: 100%;
++}
++
++body {
++  margin: 0;
++  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
++  color: var(--text);
++  background:
++    radial-gradient(800px 500px at 20% 10%, rgba(124, 58, 237, .25), transparent 60%),
++    radial-gradient(900px 600px at 80% 40%, rgba(34, 197, 94, .15), transparent 60%),
++    linear-gradient(180deg, #070a12, var(--bg));
++  display: grid;
++  place-items: center;
++  padding: 24px;
++}
++
++/* =========================
++   Layout
++========================= */
++main {
++  width: 100%;
++  max-width: 720px;
++}
++
++header {
++  text-align: center;
++  font-size: clamp(1.3rem, 1rem + 2vw, 2rem);
++  font-weight: 700;
++  letter-spacing: 0.5px;
++  margin-bottom: 14px;
++  user-select: none;
++}
++
++section {
++  background: var(--card);
++  border: 1px solid var(--card-border);
++  border-radius: var(--radius);
++  box-shadow: var(--shadow);
++  padding: 22px;
++  backdrop-filter: blur(12px);
++}
++
++/* Texto auxiliar (se quiser colocar depois) */
++.helper {
++  margin-top: 6px;
++  color: var(--muted);
++  font-size: 0.95rem;
++}
++
++/* =========================
++   Form Controls
++========================= */
++label {
++  display: block;
++}
++
++/* grid responsivo: input cresce, botão fica do lado; no mobile empilha */
++.form-row {
++  display: grid;
++  grid-template-columns: 1fr auto;
++  gap: 12px;
++  align-items: center;
++}
++
++input[type="text"] {
++  width: 100%;
++  padding: 14px 14px;
++  border-radius: 14px;
++  border: 1px solid rgba(255,255,255,.16);
++  background: rgba(10, 12, 20, .65);
++  color: var(--text);
++  outline: none;
++  font-size: 1rem;
++  transition: border-color .2s ease, box-shadow .2s ease, transform .06s ease;
++}
++
++input[type="text"]::placeholder {
++  color: rgba(255,255,255,.45);
++}
++
++input[type="text"]:focus {
++  border-color: rgba(124, 58, 237, .65);
++  box-shadow: 0 0 0 4px rgba(124, 58, 237, .22);
++}
++
++/* Botão tech */
++button {
++  padding: 14px 16px;
++  border-radius: 14px;
++  border: 1px solid rgba(255,255,255,.16);
++  background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,197,94,.60));
++  color: white;
++  font-weight: 700;
++  cursor: pointer;
++  transition: transform .08s ease, filter .2s ease, box-shadow .2s ease;
++  box-shadow: 0 14px 30px rgba(124, 58, 237, .22);
++  white-space: nowrap;
++}
++
++button:hover {
++  filter: brightness(1.05);
++}
++
++button:active {
++  transform: translateY(1px) scale(.99);
++}
++
++/* Acessibilidade: foco visível */
++button:focus-visible {
++  outline: none;
++  box-shadow: 0 0 0 4px rgba(34,197,94,.22), 0 14px 30px rgba(124, 58, 237, .22);
++}
++
++/* =========================
++   Resultado
++========================= */
++#resultado {
++  margin-top: 16px;
++  padding: 14px 16px;
++  border-radius: 14px;
++  border: 1px solid rgba(255,255,255,.12);
++  background: rgba(255,255,255,.04);
++  color: var(--muted);
++  line-height: 1.5;
++  min-height: 56px;
++}
++
++#resultado b {
++  color: var(--text);
++}
++
++/* =========================
++   Responsivo
++========================= */
++@media (max-width: 520px) {
++  section {
++    padding: 18px;
++  }
++
++  .form-row {
++    grid-template-columns: 1fr;
++  }
++
++  button {
++    width: 100%;
++  }
++}
++
++/* Reduz animações se o usuário preferir */
++@media (prefers-reduced-motion: reduce) {
++  * {
++    transition: none !important;
++  }
++}
+\ No newline at end of file
+Index: .gitattributes
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Auto detect text files and perform LF normalization\r\n* text=auto\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitattributes b/.gitattributes
+--- a/.gitattributes	(revision 4652328887975a25b32fba5b23ccd0292db162a7)
++++ b/.gitattributes	(date 1772517852394)
+@@ -1,2 +1,4 @@
+ # Auto detect text files and perform LF normalization
+ * text=auto
++# Ignora CSS na contagem de linguagens do GitHub
++*.css linguist-vendored
+\ No newline at end of file
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+--- /dev/null	(date 1772517923951)
++++ b/.gitignore	(date 1772517923951)
+@@ -0,0 +1,7 @@
++# =========================
++# IDEs and Editors
++# =========================
++.idea/
++.vscode/
++*.swp
++*.swo
+Index: index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/index.html b/index.html
+new file mode 100644
+--- /dev/null	(date 1772532021693)
++++ b/index.html	(date 1772532021693)
+@@ -0,0 +1,25 @@
++<!doctype html>
++<html lang="pt">
++
++<head>
++    <meta charset="UTF-8" />
++    <meta name="viewport" content="width=device-width, initial-scale=1" />
++    <title>Maiúscula</title>
++    <link rel="stylesheet" href="style.css" />
++</head>
++
++<body>
++    <main>
++        <header>Palavras Captalizadas</header>
++        <section>
++            <div class="form-row">
++                <label for="palavra"><input id="palavra" type="text" placeholder="Digite sua Frase" /></label>
++                <button id="capitalizar">Capitalize</button>
++                <div id="resultado"></div>
++            </div>
++        </section>
++        <script src="script.js"></script>
++    </main>
++</body>
++
++</html>
+\ No newline at end of file
